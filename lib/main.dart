@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Intro'),
+      home: MyHomePage(title: 'Book search'),
     );
   }
 }
@@ -30,10 +30,69 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+              icon: Icon(Icons.search),
+              tooltip: "Search for books by title",
+              onPressed: () {
+                showSearch(
+                    context: context, delegate: BookSearch("Book Search"));
+              }),
           title: Text(widget.title),
         ),
-        body: Center(
+        body: Padding(
+          padding: EdgeInsets.only(left: 16, top: 16),
           child: Text("Hello, World!"),
         ));
+  }
+}
+
+class BookSearch extends SearchDelegate<String> {
+  final String searchHint;
+
+  BookSearch(this.searchHint);
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    List<Widget> list = List(1);
+    list[0] = IconButton(
+        icon: Icon(Icons.close),
+        onPressed: () {
+          query = "";
+        });
+    return list;
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return BackButton();
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return new BookSearchResultsWidget(query);
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return Center(child: Text("Searching for $query..."));
+  }
+}
+
+class BookSearchResultsWidget extends StatelessWidget {
+  final String query;
+
+  const BookSearchResultsWidget(
+    this.query, {
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        query.contains("book") ? "Book goes here" : "No books found",
+        style: TextStyle(fontSize: 32),
+      ),
+    );
   }
 }
