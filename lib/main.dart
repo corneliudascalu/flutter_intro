@@ -90,51 +90,52 @@ class BookSearchResultsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (query.contains("book")) {
-      var repo = BookRepository();
-      //List<Book> books = repo.searchBook(query);
-      return FutureBuilder<List<Book>>(
-          future: repo.searchBook(query),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-              case ConnectionState.waiting:
+    var repo = BookRepository();
+    //List<Book> books = repo.searchBook(query);
+    return FutureBuilder<List<Book>>(
+        future: repo.searchBook(query),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return Center(
+                  child: Text(
+                "Searching...",
+                style: TextStyle(fontSize: 24),
+              ));
+            default:
+              if (snapshot.hasError) {
+                BookSearchException exception = snapshot.error;
                 return Center(
-                    child: Text(
-                  "Searching...",
-                  style: TextStyle(fontSize: 24),
-                ));
-              default:
-                return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (context, index) {
-                    var book = snapshot.data[index];
-                    return ExpansionTile(
-                      leading: Image.network(
-                        book.iconUrl,
-                        fit: BoxFit.scaleDown,
-                        width: 48,
-                      ),
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[Text(book.title), Text(book.author)],
-                      ),
-                      children: <Widget>[
-                        Text(
-                          book.description,
-                        )
-                      ],
-                    );
-                  },
+                  child: Text(
+                    exception.message,
+                    style: TextStyle(color: Colors.red, fontSize: 18),
+                  ),
                 );
-            }
-          });
-    }
-    return Center(
-      child: Text(
-        "No books found",
-        style: TextStyle(fontSize: 24),
-      ),
-    );
+              }
+              return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  var book = snapshot.data[index];
+                  return ExpansionTile(
+                    leading: Image.network(
+                      book.iconUrl,
+                      fit: BoxFit.scaleDown,
+                      width: 48,
+                    ),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[Text(book.title), Text(book.author)],
+                    ),
+                    children: <Widget>[
+                      Text(
+                        book.description,
+                      )
+                    ],
+                  );
+                },
+              );
+          }
+        });
   }
 }

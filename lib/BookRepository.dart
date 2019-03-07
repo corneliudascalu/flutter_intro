@@ -3,7 +3,9 @@ import 'package:flutter_intro/Book.dart';
 class BookRepository {
   Future<List<Book>> searchBook(String query) async {
     await Future.delayed(Duration(seconds: 2));
-    
+    if (query.contains("ios")) {
+      throw BookSearchException("We don't like your kind around here");
+    }
     var book = Book(
         author: "Ion Creangă",
         title: "Capra cu trei iezi",
@@ -27,4 +29,10 @@ class BookRepository {
     ]);
     return books;
   }
+}
+
+class BookSearchException implements Exception {
+  final String message;
+
+  BookSearchException(this.message);
 }
