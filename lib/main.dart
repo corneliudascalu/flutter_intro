@@ -88,6 +88,28 @@ class BookSearchResultsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (query.contains("book")) {
+      return ListView.builder(
+        itemBuilder: (context, index) {
+          return ExpansionTile(
+            leading: Icon(Icons.book),
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text("This is the title"),
+                Text("This is the author")
+              ],
+            ),
+            children: <Widget>[
+              Text(
+                "Longer book description goes here",
+              )
+            ],
+          );
+        },
+        itemCount: 20,
+      );
+    }
     return Center(
       child: Text(
         query.contains("book") ? "Book goes here" : "No books found",
