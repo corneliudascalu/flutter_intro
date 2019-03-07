@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_intro/Book.dart';
 
 void main() => runApp(MyApp());
 
@@ -89,25 +90,50 @@ class BookSearchResultsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (query.contains("book")) {
+      var book = Book(
+          author: "Ion Creangă",
+          title: "Capra cu trei iezi",
+          description: "Story of my life",
+          iconUrl: "https://placekitten.com/200/300");
+      List<Book> books = List.from([
+        book,
+        book,
+        book,
+        book,
+        book,
+        book,
+        book,
+        book,
+        book,
+        book,
+        book,
+        book,
+        book,
+        book
+      ]);
       return ListView.builder(
         itemBuilder: (context, index) {
           return ExpansionTile(
-            leading: Icon(Icons.book),
+            leading: Image.network(
+              books[index].iconUrl,
+              fit: BoxFit.scaleDown,
+              width: 48,
+            ),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text("This is the title"),
-                Text("This is the author")
+                Text(books[index].title),
+                Text(books[index].author)
               ],
             ),
             children: <Widget>[
               Text(
-                "Longer book description goes here",
+                books[index].description,
               )
             ],
           );
         },
-        itemCount: 20,
+        itemCount: books.length,
       );
     }
     return Center(
