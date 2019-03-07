@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/Book.dart';
+import 'package:flutter_intro/BookRepository.dart';
 
 void main() => runApp(MyApp());
 
@@ -90,56 +91,49 @@ class BookSearchResultsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (query.contains("book")) {
-      var book = Book(
-          author: "Ion Creangă",
-          title: "Capra cu trei iezi",
-          description: "Story of my life",
-          iconUrl: "https://placekitten.com/200/300");
-      List<Book> books = List.from([
-        book,
-        book,
-        book,
-        book,
-        book,
-        book,
-        book,
-        book,
-        book,
-        book,
-        book,
-        book,
-        book,
-        book
-      ]);
-      return ListView.builder(
-        itemBuilder: (context, index) {
-          return ExpansionTile(
-            leading: Image.network(
-              books[index].iconUrl,
-              fit: BoxFit.scaleDown,
-              width: 48,
-            ),
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(books[index].title),
-                Text(books[index].author)
-              ],
-            ),
-            children: <Widget>[
-              Text(
-                books[index].description,
-              )
-            ],
-          );
-        },
-        itemCount: books.length,
-      );
+      var repo = BookRepository();
+      //List<Book> books = repo.searchBook(query);
+      return FutureBuilder<List<Book>>(
+          future: repo.searchBook(query),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+              case ConnectionState.waiting:
+                return Center(
+                    child: Text(
+                  "Searching...",
+                  style: TextStyle(fontSize: 24),
+                ));
+              default:
+                return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (context, index) {
+                    var book = snapshot.data[index];
+                    return ExpansionTile(
+                      leading: Image.network(
+                        book.iconUrl,
+                        fit: BoxFit.scaleDown,
+                        width: 48,
+                      ),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[Text(book.title), Text(book.author)],
+                      ),
+                      children: <Widget>[
+                        Text(
+                          book.description,
+                        )
+                      ],
+                    );
+                  },
+                );
+            }
+          });
     }
     return Center(
       child: Text(
-        query.contains("book") ? "Book goes here" : "No books found",
-        style: TextStyle(fontSize: 32),
+        "No books found",
+        style: TextStyle(fontSize: 24),
       ),
     );
   }
