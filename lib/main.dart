@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_intro/BookRepository.dart';
+import 'package:flutter_intro/BookSearchResultsWidget.dart';
 
 void main() => runApp(MyApp());
 
@@ -69,30 +71,11 @@ class BookSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return new BookSearchResultsWidget(query);
+    return new BookSearchResultsWidget(query, BookRepository());
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
     return Center(child: Text("Searching for $query..."));
-  }
-}
-
-class BookSearchResultsWidget extends StatelessWidget {
-  final String query;
-
-  const BookSearchResultsWidget(
-    this.query, {
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        query.contains("book") ? "Book goes here" : "No books found",
-        style: TextStyle(fontSize: 32),
-      ),
-    );
   }
 }
