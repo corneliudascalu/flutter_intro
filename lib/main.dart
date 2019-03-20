@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/BookRepository.dart';
 import 'package:flutter_intro/BookSearchResultsWidget.dart';
+import 'package:http/http.dart';
 
 void main() => runApp(MyApp());
 
@@ -71,7 +72,7 @@ class BookSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return new BookSearchResultsWidget(query, BookRepository());
+    return new BookSearchResultsWidget(query, BookRepository(Client()));
   }
 
   @override

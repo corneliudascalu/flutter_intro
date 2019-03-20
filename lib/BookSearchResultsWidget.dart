@@ -27,7 +27,9 @@ class BookSearchResultsWidget extends StatelessWidget {
               }else if(snapshot.hasData && snapshot.data.isEmpty){
                 return Center(child: Text("No books found"));
               }
-              return ListView.builder(itemBuilder: (context, index) {
+              return ListView.builder(
+                itemCount: snapshot.data.length,
+                  itemBuilder: (context, index) {
 
                 var book = snapshot.data[index];
                 return ExpansionTile(

@@ -1,45 +1,42 @@
 import 'dart:async';
-import 'dart:math';
+import 'dart:convert';
 
 import 'package:flutter_intro/Book.dart';
+import 'package:flutter_intro/GoogleBook.dart';
+import 'package:http/http.dart';
 
 class BookRepository {
-  List<Book> search(String query) {
-    var book = Book(
-        title: "Lord of the Rings",
-        author: "Tolkien",
-        description: "This is a long description",
-        iconUrl: "https://placekitten.com/300/300");
-    List<Book> list = List(40);
-    for (int i = 0; i < 40; i++) {
-      list[i] = book;
-    }
+  final String searchUrl =
+      "https://www.googleapis.com/books/v1/volumes?maxResults=40&q=";
+  final Client client;
 
-    return list;
-  }
+  BookRepository(this.client);
 
   Future<List<Book>> searchBook(String query) async {
-    await Future.delayed(Duration(seconds: 2));
-
-    if(query.contains("javascript")) {
-      throw Exception("We don't like your kind around here");
+    var response = await client.get(searchUrl + query);
+    var body = response.body;
+    var results = jsonDecode(body);
+    List<dynamic> items = results["items"];
+    List<Book> bookList = List();
+    for (var item in items) {
+      final info = item["volumeInfo"];
+      if (info != null) {
+        GoogleBook bookInfo = GoogleBook(
+            item["id"],
+            info["title"],
+            info["authors"] != null ? info["authors"][0] : "[No Authors]",
+            info["publishedDate"],
+            info["description"],
+            info["imageLinks"]["thumbnail"],
+            info["canonicalVolumeLink"]);
+        bookList.add(Book(
+            id: bookInfo.id,
+            title: bookInfo.title,
+            description: bookInfo.description,
+            author: bookInfo.author,
+            iconUrl: bookInfo.thumbnail));
+      }
     }
-
-    if(query.contains("none")) {
-      return List();
-    }
-
-
-    var book = Book(
-        title: "Lord of the Rings",
-        author: "Tolkien",
-        description: "This is a long description",
-        iconUrl: "https://placekitten.com/300/300");
-    List<Book> list = List(40);
-    for (int i = 0; i < 40; i++) {
-      list[i] = book;
-    }
-
-    return list;
+    return bookList;
   }
 }
