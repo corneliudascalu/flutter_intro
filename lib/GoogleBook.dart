@@ -3,12 +3,13 @@ class GoogleBook {
   final String title;
   final String author;
   final String date;
-  String description;
+  final String description;
   final String thumbnail;
   final String link;
 
-  GoogleBook(this.id, this.title, this.author, this.date, String description,
-      this.thumbnail, this.link) {
-    this.description = description != null ? description : "[No description]";
-  }
+  GoogleBook(this.id, this.title, author, this.date, String description,
+      String thumbnail, this.link)
+      : this.description = description != null? description: "[No description]",
+        this.author = author != null ? author : "[No author]",
+        this.thumbnail = thumbnail != null ? thumbnail : "";
 }

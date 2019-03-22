@@ -24,33 +24,32 @@ class BookSearchResultsWidget extends StatelessWidget {
             default:
               if (snapshot.hasError) {
                 return Center(child: Text(snapshot.error.toString()));
-              }else if(snapshot.hasData && snapshot.data.isEmpty){
+              } else if (snapshot.hasData && snapshot.data.isEmpty) {
                 return Center(child: Text("No books found"));
               }
               return ListView.builder(
-                itemCount: snapshot.data.length,
+                  itemCount: snapshot.data.length,
                   itemBuilder: (context, index) {
-
-                var book = snapshot.data[index];
-                return ExpansionTile(
-                  leading: Image.network(
-                    book.iconUrl,
-                    height: 48,
-                    fit: BoxFit.fitWidth,
-                  ),
-                  title: Text(book.title),
-                  children: <Widget>[
-                    Text(
-                      book.author,
-                      textAlign: TextAlign.start,
-                    ),
-                    Text(
-                      book.description,
-                      textAlign: TextAlign.start,
-                    )
-                  ],
-                );
-              });
+                    var book = snapshot.data[index];
+                    return ExpansionTile(
+                      leading: Image.network(
+                        book.iconUrl,
+                        height: 48,
+                        fit: BoxFit.fitWidth,
+                      ),
+                      title: Text(book.title),
+                      children: <Widget>[
+                        Text(
+                          book.author,
+                          textAlign: TextAlign.start,
+                        ),
+                        Text(
+                          book.description,
+                          textAlign: TextAlign.start,
+                        )
+                      ],
+                    );
+                  });
           }
         });
   }
