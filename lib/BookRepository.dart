@@ -13,30 +13,36 @@ class BookRepository {
   BookRepository(this.client);
 
   Future<List<Book>> searchBook(String query) async {
+    var googleBooks = await searchBooksOnGoogle(query);
+    List<Book> bookList = List();
+    for (var book in googleBooks) {
+      bookList.add(Book(
+          id: book.id,
+          title: book.title,
+          description: book.description,
+          author: book.author,
+          iconUrl: book.thumbnail));
+    }
+    return bookList;
+  }
+
+  Future<List<GoogleBook>> searchBooksOnGoogle(String query) async {
     var response = await client.get(searchUrl + query);
     var body = response.body;
     var results = jsonDecode(body);
     List<dynamic> items = results["items"];
-    List<Book> bookList = List();
+    List<GoogleBook> list = List();
     for (var item in items) {
       final info = item["volumeInfo"];
-      if (info != null) {
-        GoogleBook bookInfo = GoogleBook(
-            item["id"],
-            info["title"],
-            info["authors"] != null ? info["authors"][0] : "[No Authors]",
-            info["publishedDate"],
-            info["description"],
-            info["imageLinks"]["thumbnail"],
-            info["canonicalVolumeLink"]);
-        bookList.add(Book(
-            id: bookInfo.id,
-            title: bookInfo.title,
-            description: bookInfo.description,
-            author: bookInfo.author,
-            iconUrl: bookInfo.thumbnail));
-      }
+      list.add(GoogleBook(
+          item["id"],
+          info["title"],
+          info["authors"] != null ? info["authors"][0] : "[No Authors]",
+          info["publishedDate"],
+          info["description"],
+          info["imageLinks"]["thumbnail"],
+          info["canonicalVolumeLink"]));
     }
-    return bookList;
+    return list;
   }
 }
