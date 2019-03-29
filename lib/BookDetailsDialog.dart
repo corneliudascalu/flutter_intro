@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/Book.dart';
 
-class BookDetailsDialog extends StatelessWidget {
-  const BookDetailsDialog({
+class BookDetailsWidget extends StatelessWidget {
+  const BookDetailsWidget({
     Key key,
-    @required this.book,
-    @required this.dialogTextStyle,
+    this.book,
+    this.dialogTextStyle,
   }) : super(key: key);
 
   final Book book;
@@ -15,21 +15,22 @@ class BookDetailsDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(book.title),
-      content: Table(
-        children: <TableRow>[
-          TableRow(children: [
+      content: Container(
+        constraints: BoxConstraints.loose(Size(double.maxFinite, 200)),
+        width: double.maxFinite,
+        child: ListView(
+          shrinkWrap: true,
+          children: <Widget>[
             Text(
               book.author,
               style: dialogTextStyle,
-            )
-          ]),
-          TableRow(children: [
+            ),
             Text(
               book.description,
               style: dialogTextStyle,
             )
-          ]),
-        ],
+          ],
+        ),
       ),
       actions: <Widget>[
         FlatButton(

@@ -51,7 +51,7 @@ class BookListItem extends StatelessWidget {
                             showDialog(
                                 context: context,
                                 builder: (buildContext) {
-                                  return new BookDetailsDialog(
+                                  return new BookDetailsWidget(
                                       book: book,
                                       dialogTextStyle: dialogTextStyle);
                                 })
