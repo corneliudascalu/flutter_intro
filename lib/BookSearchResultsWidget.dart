@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/Book.dart';
+import 'package:flutter_intro/BookListItem.dart';
 import 'package:flutter_intro/BookRepository.dart';
 
 class BookSearchResultsWidget extends StatelessWidget {
@@ -37,83 +38,10 @@ class BookSearchResultsWidget extends StatelessWidget {
                       fontSize: 20,
                       color: Colors.brown,
                     );
-                    return ExpansionTile(
-                      leading: Image.network(
-                        book.iconUrl,
-                        height: 48,
-                        fit: BoxFit.fitWidth,
-                      ),
-                      title: Text(book.title),
-                      children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.all(16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  book.author,
-                                  textAlign: TextAlign.end,
-                                  style: descriptionStyle,
-                                ),
-                                Text(
-                                  book.description,
-                                  textAlign: TextAlign.start,
-                                  style: descriptionStyle,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    MaterialButton(
-                                      onPressed: () => {},
-                                      child: Text("Add"),
-                                    ),
-                                    MaterialButton(
-                                      onPressed: () => {
-                                            showDialog(
-                                                context: context,
-                                                builder: (buildContext) {
-                                                  return AlertDialog(
-                                                    title: Text(book.title),
-                                                    content: Table(
-                                                      children: <TableRow>[
-                                                        TableRow(
-                                                            children: [
-                                                          Text(
-                                                            book.author,
-                                                            style:
-                                                                dialogTextStyle,
-                                                          )
-                                                        ]),
-                                                        TableRow(children: [
-                                                          Text(
-                                                            book.description,
-                                                            style:
-                                                                dialogTextStyle,
-                                                          )
-                                                        ]),
-                                                      ],
-                                                    ),
-                                                    actions: <Widget>[
-                                                      FlatButton(
-                                                        child: Text("Add"),
-                                                        onPressed: () => {},
-                                                      ),
-                                                      MaterialButton(
-                                                        onPressed: () => { Navigator.pop(context)},
-                                                        child: Text("Cancel"),
-                                                      ),
-                                                    ],
-                                                  );
-                                                })
-                                          },
-                                      child: Text("Details"),
-                                    )
-                                  ],
-                                )
-                              ],
-                            )),
-                      ],
-                    );
+                    return new BookListItem(
+                        book: book,
+                        descriptionStyle: descriptionStyle,
+                        dialogTextStyle: dialogTextStyle);
                   });
           }
         });
