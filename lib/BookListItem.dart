@@ -47,15 +47,25 @@ class BookListItem extends StatelessWidget {
                       child: Text("Add"),
                     ),
                     MaterialButton(
-                      onPressed: () => {
-                            showDialog(
-                                context: context,
-                                builder: (buildContext) {
-                                  return new BookDetailsWidget(
-                                      book: book,
-                                      dialogTextStyle: dialogTextStyle);
-                                })
-                          },
+                      onPressed: () {
+                        if (book.author.length > 10) {
+                          showDialog(
+                              context: context,
+                              builder: (buildContext) {
+                                return new BookDetailsWidget(
+                                    book: book,
+                                    dialogTextStyle: dialogTextStyle);
+                              });
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BookDetailsWidget(
+                                        book: book,
+                                        dialogTextStyle: dialogTextStyle,
+                                      )));
+                        }
+                      },
                       child: Text("Details"),
                     )
                   ],
