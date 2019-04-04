@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/Book.dart';
-import 'package:flutter_intro/BookComplexDescriptionWidget.dart';
 import 'package:flutter_intro/BookDescriptionWidget.dart';
 
 class BookListItemWidget extends StatelessWidget {
@@ -43,19 +42,11 @@ class BookListItemWidget extends StatelessWidget {
                     ),
                     MaterialButton(
                       onPressed: () {
-                        if (book.title.length > 10)
-                          showDialog(
-                              context: context,
-                              builder: (buildContext) {
-                                return new BookDescriptionWidget(book: book);
-                              });
-                        else
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      new BookComplexDescriptionWidget(
-                                          book: book)));
+                        showDialog(
+                            context: context,
+                            builder: (buildContext) {
+                              return new BookDescriptionWidget(book: book);
+                            });
                       },
                       child: Text("Details"),
                     )

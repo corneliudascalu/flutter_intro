@@ -12,36 +12,31 @@ class BookComplexDescriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(book.title),
-      ),
-      body: Container(
-        width: double.maxFinite,
-        constraints: BoxConstraints.loose(Size(double.maxFinite, 200)),
-        child: ListView(
-          shrinkWrap: true,
-          children: <Widget>[
-            Text(
-              "Author",
-              style: TextStyle(color: Colors.grey, fontSize: 14),
-            ),
-            Text(
-              book.author,
-              style: dialogTextStyle,
-            ),
-            Text(
-              "Description",
-              style: TextStyle(color: Colors.grey, fontSize: 14),
-            ),
-            Text(
-              book.description,
-              style: dialogTextStyle,
-              maxLines: 4,
-              overflow: TextOverflow.ellipsis,
-            )
-          ],
-        ),
+    return Container(
+      width: double.maxFinite,
+      constraints: BoxConstraints.loose(Size(double.maxFinite, 200)),
+      child: ListView(
+        shrinkWrap: true,
+        children: <Widget>[
+          Text(
+            "Author",
+            style: TextStyle(color: Colors.grey, fontSize: 14),
+          ),
+          Text(
+            book.author,
+            style: dialogTextStyle,
+          ),
+          Text(
+            "Description",
+            style: TextStyle(color: Colors.grey, fontSize: 14),
+          ),
+          Text(
+            book.description,
+            style: dialogTextStyle,
+            maxLines: 4,
+            overflow: TextOverflow.ellipsis,
+          )
+        ],
       ),
     );
   }
