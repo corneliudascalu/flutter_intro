@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/BookRepository.dart';
 import 'package:flutter_intro/BookSearchResultsWidget.dart';
+import 'package:flutter_intro/SearchBloc.dart';
+import 'package:flutter_intro/SearchEvents.dart';
 import 'package:http/http.dart';
 
 void main() => runApp(MyApp());
@@ -29,6 +31,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  SearchBloc bloc = SearchBloc();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
               tooltip: "Search for books by title",
               onPressed: () {
                 showSearch(
-                    context: context, delegate: BookSearch("Book Search"));
+                    context: context, delegate: BookSearch("Book Search", bloc));
               }),
           title: Text(widget.title),
         ),
@@ -51,8 +54,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class BookSearch extends SearchDelegate<String> {
   final String searchHint;
+  final SearchBloc searchBloc;
 
-  BookSearch(this.searchHint);
+  BookSearch(this.searchHint, this.searchBloc);
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -72,7 +76,10 @@ class BookSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return new BookSearchResultsWidget(query, BookRepository(Client()));
+    searchBloc.dispatch(QueryChanged("lord"));
+
+    return new BookSearchResultsWidget(
+        query, BookRepository(Client()), searchBloc);
   }
 
   @override
