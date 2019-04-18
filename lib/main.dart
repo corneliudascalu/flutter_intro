@@ -31,7 +31,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  SearchBloc bloc = SearchBloc();
+  SearchBloc bloc = SearchBloc(bookRepository: BookRepository(Client()));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,8 +79,7 @@ class BookSearch extends SearchDelegate<String> {
   Widget buildResults(BuildContext context) {
     searchBloc.dispatch(QueryChanged("lord"));
 
-    return new BookSearchResultsWidget(
-        query, BookRepository(Client()), searchBloc);
+    return new BookSearchResultsWidget(query, searchBloc);
   }
 
   @override

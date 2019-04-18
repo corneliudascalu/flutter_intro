@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_intro/BookRepository.dart';
 import 'package:flutter_intro/SearchBloc.dart';
 import 'package:flutter_intro/SearchEvents.dart';
 import 'package:flutter_intro/SearchState.dart';
 
 class BookSearchResultsWidget extends StatelessWidget {
   final String query;
-  final BookRepository repo;
   final SearchBloc bloc;
 
   const BookSearchResultsWidget(
     this.query,
-    this.repo,
     this.bloc, {
     Key key,
   }) : super(key: key);
